@@ -2,6 +2,11 @@ package zwh.exception;
 
 import zwh.map.point.Point;
 
+/**
+ * 当x，y取值超过限定范围时
+ * @author zwh
+ *
+ */
 public class UnvalidPointException extends Exception {
 
     private Point point;

@@ -125,7 +125,7 @@ public class MapChecker {
 		return true;
 	    }
 	    // System.out.println(currKey);
-	    // 添加到已经set中
+	    // 添加到已经遍历过的set中
 	    MapChecker.pathedPoints.add(currKey);
 
 	    // 往上走

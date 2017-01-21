@@ -11,7 +11,7 @@ import zwh.move.rule.IMapMoveRule;
 public class ManMover {
     
     /**
-     * 如果往该方向移动一格是合法的移动，则返回移动后的SokobanMap，否则返回原来的SokobanMap
+     * 使用默认的DefaultMapMoveRule，如果往该方向移动一格是合法的移动，则返回移动后的SokobanMap，否则返回原来的SokobanMap
      * @param map
      * @param direction
      * @return
@@ -20,6 +20,12 @@ public class ManMover {
 	return ManMover.moveOneStep(map, direction, new DefaultMapMoveRule());
     }
     
+    /**
+     * 传入指定的IMapMoveRule，如果往该方向移动一格是合法的移动，则返回移动后的SokobanMap，否则返回原来的SokobanMap
+     * @param map
+     * @param direction
+     * @return
+     */
     public static SokobanMap moveOneStep(SokobanMap map, int direction, IMapMoveRule mapRule) {
 	switch (direction) {
 	case MapDirection.UP:

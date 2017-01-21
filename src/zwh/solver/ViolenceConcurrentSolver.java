@@ -13,6 +13,11 @@ import zwh.map.SokobanMap;
 import zwh.move.ManMover;
 import zwh.solver.judge.IJudger;
 
+/**
+ * 多线程求解器
+ * @author zwh
+ *
+ */
 public class ViolenceConcurrentSolver implements ISokobanSolver {
 
     private static final int CPU_NUM = Runtime.getRuntime().availableProcessors();
@@ -24,6 +29,9 @@ public class ViolenceConcurrentSolver implements ISokobanSolver {
     private IJudger judger;
     private long time = 0;
 
+    /**
+     * 清空缓存
+     */
     public void clear(){
 	solvedMap = null;
 	pool = Executors.newFixedThreadPool(POOL_SIZE);
@@ -39,6 +47,9 @@ public class ViolenceConcurrentSolver implements ISokobanSolver {
 	this.judger = judger;
     }
 
+    /**
+     * 终止所有线程的执行
+     */
     public void shutdown() {
 	try{
 	    pool.shutdownNow();
@@ -74,6 +85,10 @@ public class ViolenceConcurrentSolver implements ISokobanSolver {
 	this.judger.clear();
     }
 
+    /**
+     * 迭代版
+     * @param map
+     */
     private void iterateFindPath(SokobanMap map) {
 	Stack<SokobanMap> maps = new Stack<SokobanMap>();
 	maps.add(map);
@@ -96,6 +111,11 @@ public class ViolenceConcurrentSolver implements ISokobanSolver {
 	}
     }
 
+    /**
+     * 迭代版，用于决定是否创建新线程执行
+     * @param map
+     * @return true（创建新线程）
+     */
     private boolean executeIterateFindPath(final SokobanMap map) {
 	if (aliveThread.tryAcquire()) {
 	    pool.execute(new Runnable() {
@@ -110,6 +130,10 @@ public class ViolenceConcurrentSolver implements ISokobanSolver {
 	return false;
     }
 
+    /**
+     * 递归版
+     * @param map
+     */
     private void recursiveFindPath(SokobanMap map) {
 	SokobanMap nextMap = this.getNextMap(map);
 	while (nextMap != null && this.solvedMap == null) {
@@ -125,6 +149,10 @@ public class ViolenceConcurrentSolver implements ISokobanSolver {
 	}
     }
 
+    /**
+     * 用于决定是创建新线程还是在原来线程中执行
+     * @param map
+     */
     private void executeRecursiveFindPath(final SokobanMap map) {
 	if (aliveThread.tryAcquire()) {
 	    pool.execute(new Runnable() {

@@ -24,7 +24,7 @@ public class SokobanMap {
 	this.mx = mapStr.indexOf(MapSymble.SPLIT_LINE_SYMBLE);
 	this.my = mapStr.indexOf(MapSymble.SPLIT_LINE_SYMBLE);
 	this.mapStr = mapStr;
-	this.manPoint = this.initialzeAndGetManPoint();
+	this.manPoint = this.getManPoint();
 	this.path = path;
     }
 
@@ -32,7 +32,7 @@ public class SokobanMap {
 	this.mx = mapList.size();
 	this.my = mapList.get(0).length();
 	this.mapStr = SokobanMap.initializeMapList(mapList);
-	this.manPoint = this.initialzeAndGetManPoint();
+	this.manPoint = this.getManPoint();
 	this.path = path;
     }
 
@@ -41,9 +41,14 @@ public class SokobanMap {
     }
     
     public SokobanMap(SokobanMap map, String path){
-	this(map.mapStr, map.path);
+	this(map.mapStr, path);
     }
     
+    /**
+     * 将list形式的地图转化为String形式的地图
+     * @param mapList
+     * @return
+     */
     private static String initializeMapList(List<String> mapList) {
 	String mapStr = "";
 	for (String temp : mapList) {
@@ -52,8 +57,11 @@ public class SokobanMap {
 	return mapStr.substring(1);
     }
 
-    
-    private Point initialzeAndGetManPoint() {
+    /**
+     * 获取人的位置点
+     * @return
+     */
+    private Point getManPoint() {
 	int x = 0, y = 0;
 	int index = this.mapStr.indexOf(MapSymble.MAN);
 	if(index < 0){
