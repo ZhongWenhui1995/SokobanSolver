@@ -89,24 +89,31 @@ public class ManMover {
      */
     private static SokobanMap move(SokobanMap map, int direction, IMapMoveRule mapRule) {
 	SokobanMap resMap = null;
+	//人的坐标Point	
 	Point movePoint = map.manPoint;
+	//目标坐标	
 	Point nextPoint = ManMover.getTargetPoint(movePoint, direction);
+	//目标坐标的下一个点	
 	Point nextNextPoint = ManMover.getTargetPoint(nextPoint, direction);
 	try {
+	    //人坐标点的字符	
 	    char  moveChar = map.getCharByPoint(movePoint);
+	    //目标坐标的字符	
 	    char goalChar = map.getCharByPoint(nextPoint);
 	    //判断需要移动的物体是否为人（只有人能被移动）
 	    if (MapSymble.isMan(moveChar)) {
 		//判断人的目的地点是否为墙壁或者另一个人
 		if (goalChar == MapSymble.WALL_CHAR || MapSymble.isMan(goalChar)) {
 		    resMap = map;
-		}else if(goalChar == MapSymble.GROUND_CHAR || goalChar == MapSymble.GOAL_CHAR){//判断人的目的地点是否为地板或目标地点
+		}else if(goalChar == MapSymble.GROUND_CHAR || goalChar == MapSymble.GOAL_CHAR){//判断人的目的地点是否为地板或目标地点，是则可以移动				    //修改人移动前的坐标点的字符		
 		    resMap = map.modifyPoint(movePoint, mapRule.getCharOfMoveAfterMove(moveChar));
+		    //修改目标点的字符		
 		    resMap = resMap.modifyPoint(nextPoint, mapRule.getCharOfGoalAfterMove(goalChar, moveChar));
+		    //修改路径		
 		    resMap = new SokobanMap(resMap.getMapList(), resMap.path + MapDirection.getPath(direction));
 		}else if(MapSymble.isBox(goalChar)){//判断人的目的地点是否为箱子
 		    char nextNextChar = map.getCharByPoint(nextNextPoint);
-		    //判断人的目的地点的下个地点是否为地板和goal
+		    //判断人的目标地点的下个地点是否为地板和goal，如果是则可以移动，否则不能移动		
 		    if(nextNextChar == MapSymble.GROUND_CHAR || nextNextChar == MapSymble.GOAL_CHAR){
 			resMap = map.modifyPoint(movePoint, mapRule.getCharOfMoveAfterMove(moveChar));
 			resMap = resMap.modifyPoint(nextPoint, mapRule.getCharOfGoalAfterMove(goalChar, moveChar));
